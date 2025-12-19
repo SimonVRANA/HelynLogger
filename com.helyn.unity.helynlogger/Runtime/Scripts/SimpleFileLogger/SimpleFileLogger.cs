@@ -39,7 +39,7 @@ namespace Helyn.Logger
 			string rawMessage = formatter(state, exception);
 
 			// Apply formatting (from user settings)
-			string finalMessage = SimpleFileLoggerFormatter.ApplyFormat(rawMessage,
+			string finalMessage = SimpleFileLogFormatter.ApplyFormat(rawMessage,
 																		logLevel,
 																		categoryName);
 

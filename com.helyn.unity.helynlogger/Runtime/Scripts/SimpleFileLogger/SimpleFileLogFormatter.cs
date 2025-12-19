@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Helyn.Logger
 {
-	public static class SimpleFileLoggerFormatter
+	public static class SimpleFileLogFormatter
 	{
 		public static string ApplyFormat(string rawMessage,
 										 LogLevel logLevel,
