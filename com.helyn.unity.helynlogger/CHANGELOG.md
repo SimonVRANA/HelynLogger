@@ -1,8 +1,8 @@
 # Changelog
-All notable changes to the Code Coverage package will be documented in this file.
+All notable changes to the Helyn Logger package will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 19-12-2026
-Project aborted, see readme for more info.
+## [1.0.0] - 19-12-2025
+Project aborted, see the `README` for more info.

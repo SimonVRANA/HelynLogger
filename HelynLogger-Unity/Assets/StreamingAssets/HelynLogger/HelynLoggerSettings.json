@@ -1,0 +1,18 @@
+{
+  "ConfigFolderPath": "HelynLogger",
+  "ConfigFileName": "HelynLoggerConfig.json",
+  "ConfigFilePath": "C:/Users/SVRADJ7E/Workspace/Perso/CsProjects/Unity/LoggerFail/HelynLogger-Unity/Assets/StreamingAssets\\HelynLogger",
+  "EnableConsoleLogging": true,
+  "ConsoleLogFormat": "[{timestamp:yyyy-MM-dd HH:mm:ss.fff}] {level} {category}: {message}",
+  "ColorLogLevel": false,
+  "TraceColor": "white",
+  "DebugColor": "white",
+  "InformationColor": "white",
+  "WarningColor": "yellow",
+  "ErrorColor": "red",
+  "CriticalColor": "magenta",
+  "NoneColor": "white",
+  "EnableFileLogging": false,
+  "LogFilePath": "logs/log.txt",
+  "FileLogFormat": "[{timestamp:yyyy-MM-dd HH:mm:ss.fff}] {level} {category}: {message}"
+}

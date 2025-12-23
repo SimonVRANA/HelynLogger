@@ -8,8 +8,24 @@ namespace Helyn.Logger
 {
 	public class LoggerSettings
 	{
-		public string ConfigBasePath => Path.Combine(Application.streamingAssetsPath, "HelynLogger");
+		public string ConfigFolderPath { get; set; } = "HelynLogger";
 		public string ConfigFileName { get; set; } = "HelynLoggerConfig.json";
+
+		public string ConfigFilePath
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(ConfigFolderPath))
+				{
+					return Application.streamingAssetsPath;
+				}
+				if (Path.IsPathRooted(ConfigFolderPath))
+				{
+					return ConfigFolderPath;
+				}
+				return Path.Combine(Application.streamingAssetsPath, ConfigFolderPath);
+			}
+		}
 
 		#region Unity console
 

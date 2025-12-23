@@ -1,4 +1,4 @@
-# Helyn logger — Prototype
+# Helyn Logger for C# - Archived
 
 This is the first attempt at making a custom logger for Unity.
 
@@ -11,7 +11,7 @@ The main features I wanted for this logger were:
 - to have a custom log file
 - to have custom log formats for console and log file
 
-## Where it failed
+## Why it was not what I needed
 I had seen that the Microsoft.Extensions.Logging classes already implement all of those features. That's the main reason I chose to implement my logger with them (I was also curious about the framework).
 Problems arose when I tried using it, mainly:
 - I had in mind that C++ macros could be declared to simplify code; for example: `#define HELYN_LOGGABLE private static readonly ILogger helynLogger = LoggerSetup.LoggerFactory.CreateLogger();`. I did not find a similar approach in C# that would allow a simple way to use my logger.

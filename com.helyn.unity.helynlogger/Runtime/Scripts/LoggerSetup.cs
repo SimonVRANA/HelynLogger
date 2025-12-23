@@ -3,8 +3,8 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using UnityEngine;
 
 namespace Helyn.Logger
 {
@@ -69,7 +69,7 @@ namespace Helyn.Logger
 			EnsureConfigFileExists();
 
 			ConfigurationBuilder configurationBuilder = new();
-			configurationBuilder.SetBasePath(settings.ConfigBasePath);
+			configurationBuilder.SetBasePath(settings.ConfigFilePath);
 			configurationBuilder.AddJsonFile(settings.ConfigFileName);
 
 			configuration = configurationBuilder.Build();
@@ -77,19 +77,28 @@ namespace Helyn.Logger
 
 		private static void EnsureConfigFileExists()
 		{
-			string configFilePath = System.IO.Path.Combine(settings.ConfigBasePath, settings.ConfigFileName);
+			string configFilePath = System.IO.Path.Combine(settings.ConfigFilePath, settings.ConfigFileName);
 			if (!System.IO.File.Exists(configFilePath))
 			{
 				var defaultConfig = new
 				{
-					LogLevel = new
+					Logging = new
 					{
-						Default = "Information",
-						Microsoft = "Warning",
-						System = "Warning"
+						LogLevel = new
+						{
+							Default = "Information",
+							Microsoft = "Warning",
+							System = "Warning"
+						}
 					}
 				};
-				string json = JsonUtility.ToJson(defaultConfig, true);
+				string json = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented);
+
+				if (!System.IO.Directory.Exists(settings.ConfigFilePath))
+				{
+					System.IO.Directory.CreateDirectory(settings.ConfigFilePath);
+				}
+
 				System.IO.File.WriteAllText(configFilePath, json);
 			}
 		}

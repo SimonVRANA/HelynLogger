@@ -1,23 +1,21 @@
 
-# Technical documentation
+# Technical Documentation
 
 ## Class list
-- **LoggerSetup.cs**: The package entry point, creates loggers and keeps track of them.
+- **LoggerSetup.cs**: The package entry point. Creates loggers and keeps track of them.
 - **LoggerSettings.cs**: All settings for the loggers (both console and file).
-- **LoggerSettingsLoader.cs**: Loads and save the settings from a Json file in (Application.streamingAssetsPath).
-- **LoggerFilder.cs**: Provide a way to filter logs with default C# class base filters (More info in the [LoggerFilter section](#loggerfiltercs---a-workaround)).
-<br><br>
-- UnityLogger/**UnityLoggerProvider.cs**: Provides a UnityLogger for each category (namespace+classname).
-- UnityLogger/**UnityLogger.cs**: Logs the messages to the Unity console.
-- UnityLogger/**UnityLogFormatter.cs**: Formats the log using the format provided in the *Unity console* section of the LoggerSettings.
-<br><br>
-- SimpleFileLoader/**SimpleFileLoaderProvider**: Provides a SimpleFileLoader for each category (namespace+classname).
-- SimpleFileLoader/**SimpleFileLoader.cs**: Logs the messages to a file.
-- SimpleFileLoader/**SimpleFileLogFormatter.cs**: Formats the log using the format provided in the *File* section of the LoggerSettings.
+- **LoggerSettingsLoader.cs**: Loads and saves settings from a JSON file in `Application.streamingAssetsPath`.
+
+- UnityLogger/**UnityLoggerProvider.cs**: Provides a UnityLogger for each category (namespace + class name).
+- UnityLogger/**UnityLogger.cs**: Logs messages to the Unity console.
+- UnityLogger/**UnityLogFormatter.cs**: Formats log messages using the format provided in the *Unity console* section of the `LoggerSettings`.
+
+- SimpleFileLoader/**SimpleFileLoaderProvider.cs**: Provides a SimpleFileLoader for each category (namespace + class name).
+- SimpleFileLoader/**SimpleFileLoader.cs**: Logs messages to a file.
+- SimpleFileLoader/**SimpleFileLogFormatter.cs**: Formats log messages using the format provided in the *File* section of the `LoggerSettings`.
 
 ## Flow
 ### Start
-
 ```mermaid
 sequenceDiagram
     participant LoggerSetup
@@ -29,7 +27,7 @@ sequenceDiagram
     deactivate LoggerSettingsLoader
     LoggerSettingsLoader -->>- LoggerSetup: return settings
 
-    LoggerSetup ->> LoggerSetup: Read IConfiguration from file set in settings
+    LoggerSetup ->> LoggerSetup: Read `IConfiguration` from the file specified in the settings
     LoggerSetup ->>+ LoggerSetup: Create logger factory
     LoggerSetup ->> LoggerSetup: Add configuration and debug provider
     opt Unity logs enabled in settings
@@ -43,7 +41,7 @@ sequenceDiagram
 ```
 
 ### Unity console log
-Unity console logger and File logger works the same, except for the Log method.
+The Unity console logger and the file logger work the same way, except for the Log method.
 
 ```mermaid
 sequenceDiagram
@@ -59,14 +57,9 @@ sequenceDiagram
     participant UnityLogger
     AClass ->>+ UnityLogger: Log
 
-    participant LoggerFilter
-    UnityLogger ->>+ LoggerFilter: IsEnabled
-    LoggerFilter ->> LoggerFilter: Create "dummy" logger
-    LoggerFilter -->>- UnityLogger:
-
     opt is enabled
     participant UnityLogFormatter
-    UnityLogger ->>+ UnityLogFormatter: FormatMessageFormatLogMessage
+    UnityLogger ->>+ UnityLogFormatter: FormatLogMessage
     UnityLogFormatter -->>- UnityLogger:
 
     participant UnityEngine.Debug
@@ -77,7 +70,7 @@ sequenceDiagram
 ```
 
 ### File log
-Unity console logger and File logger works the same, except for the Log method.
+The Unity console logger and the file logger work the same way, except for the Log method.
 ```mermaid
 sequenceDiagram
     participant AClass
@@ -92,14 +85,9 @@ sequenceDiagram
     participant SimpleFileLogger
     AClass ->>+ SimpleFileLogger: Log
 
-    participant LoggerFilter
-    SimpleFileLogger ->>+ LoggerFilter: IsEnabled
-    LoggerFilter ->> LoggerFilter: Create "dummy" logger
-    LoggerFilter -->>- SimpleFileLogger:
-
     opt is enabled
     participant SimpleFileLogFormatter
-    SimpleFileLogger ->>+ SimpleFileLogFormatter: FormatMessageFormatLogMessage
+    SimpleFileLogger ->>+ SimpleFileLogFormatter: FormatLogMessage
     SimpleFileLogFormatter -->>- SimpleFileLogger:
 
     participant System.IO.File
@@ -108,10 +96,3 @@ sequenceDiagram
     end
 
 ```
-
-## LoggerFilter.cs - a workaround
-I did not find a way to get the default category filtering in my custom loggers. So the class is a workaround to get access to this filtering "outside" of my custom loggers.
-
-The LoggerFilter class creates a "default" LoggerFactory that only create a configuration. Loggers are stored in a dictionary for easier access.
-
-My loggers IsEnabled method simply calls the LoggerFilter. LoggerFilter will then get or create the "fake default" logger and call IsEnabled on it to tell my logger if it should be enabled or not for this category.

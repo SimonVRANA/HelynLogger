@@ -1,6 +1,7 @@
 // This code has been made by Simon VRANA.
 // Please ask by email (simon.vrana.pro@gmail.com) before reusing for commercial purpose.
 
+using Newtonsoft.Json;
 using System.IO;
 using UnityEngine;
 
@@ -22,13 +23,27 @@ namespace Helyn.Logger
 			try
 			{
 				string json = System.IO.File.ReadAllText(SettingsFilePath);
-				LoggerSettings settings = JsonUtility.FromJson<LoggerSettings>(json);
+				LoggerSettings settings = JsonConvert.DeserializeObject<LoggerSettings>(json);
 				return settings ?? new LoggerSettings();
 			}
-			catch (System.Exception ex)
+			catch
 			{
-				Debug.LogError($"Error loading logger settings from {SettingsFilePath}: {ex.Message}. Using default settings.");
-				return new LoggerSettings();
+				Debug.LogWarning("No valid logger settings found, using default settings. Creating a default settings.json file.");
+
+				SaveSettings(new LoggerSettings());
+
+				try
+				{
+					string json = System.IO.File.ReadAllText(SettingsFilePath);
+					LoggerSettings settings = JsonConvert.DeserializeObject<LoggerSettings>(json);
+					return settings ?? new LoggerSettings();
+				}
+				catch (System.Exception secondException)
+				{
+					Debug.LogError("Failed to load default logger settings after creating default settings file.");
+					Debug.LogException(secondException);
+					return LoadSettings();
+				}
 			}
 		}
 
@@ -38,7 +53,18 @@ namespace Helyn.Logger
 
 			try
 			{
-				string json = JsonUtility.ToJson(settings, true);
+				string directory = System.IO.Path.GetDirectoryName(SettingsFilePath);
+				if (string.IsNullOrEmpty(directory))
+				{
+					directory = SettingsBasePath;
+				}
+
+				if (!System.IO.Directory.Exists(directory))
+				{
+					System.IO.Directory.CreateDirectory(directory);
+				}
+
+				string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
 				System.IO.File.WriteAllText(SettingsFilePath, json);
 			}
 			catch (System.Exception ex)

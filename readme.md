@@ -1,1 +1,1 @@
-Documentation can be found in [package readme](com.helyn.unity.helynlogger/README.md).
+Documentation can be found in [package README](com.helyn.unity.helynlogger/README.md).

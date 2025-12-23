@@ -1,0 +1,10 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Trace",
+      "Helyn.Logger.Example": "Information",
+      "Microsoft": "Warning",
+      "System": "Warning"
+    }
+  }
+}

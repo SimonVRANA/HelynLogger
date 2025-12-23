@@ -25,7 +25,7 @@ namespace Helyn.Logger
 
 		public bool IsEnabled(LogLevel logLevel)
 		{
-			return LoggerFilter.IsEnabled(categoryName, logLevel);
+			return true;
 		}
 
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
